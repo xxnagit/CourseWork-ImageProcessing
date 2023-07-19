@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Feb 19 09:03:50 2019
+
+
+"""
+
+import cv2
+import numpy as np
+from matplotlib import pyplot as plt
+
+img = cv2.imread('cityhallRe.jpg',0)
+imF = np.float32(img)
+dft = cv2.dft(imF,flags = cv2.DFT_COMPLEX_OUTPUT)
+dft_shift = np.fft.fftshift(dft)
+magnitude_spectrum = 20*np.log(cv2.magnitude(dft_shift[:,:,0],dft_shift[:,:,1]))
+
+blur = cv2.blur(img,(5,5))
+imFB = np.float32(blur)
+dftB = cv2.dft(imFB,flags = cv2.DFT_COMPLEX_OUTPUT)
+dft_shiftB = np.fft.fftshift(dftB)
+magnitude_spectrumB = 20*np.log(cv2.magnitude(dft_shiftB[:,:,0],dft_shiftB[:,:,1]))
+
+plt.subplot(221),plt.imshow(img),plt.title('Original')
+plt.xticks([]), plt.yticks([])
+plt.subplot(222),plt.imshow(blur),plt.title('Mean Operated')
+plt.xticks([]), plt.yticks([])
+plt.subplot(223),plt.imshow(magnitude_spectrum),plt.title('Original Spectrum')
+plt.xticks([]), plt.yticks([])
+plt.subplot(224),plt.imshow(magnitude_spectrumB),plt.title('After Mean Spectrum')
+plt.xticks([]), plt.yticks([])
+
+plt.show()
